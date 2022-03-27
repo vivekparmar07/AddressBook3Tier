@@ -7,20 +7,21 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AddressBook3Tier", ".", "{8
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_54193"
-		Debug.AspNetCompiler.PhysicalPath = "D:\.net\Projects\AddressBook3Tier\"
+		Debug.AspNetCompiler.PhysicalPath = "..\AddressBook3Tier\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54193\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_54193"
-		Release.AspNetCompiler.PhysicalPath = "D:\.net\Projects\AddressBook3Tier\"
+		Release.AspNetCompiler.PhysicalPath = "..\AddressBook3Tier\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54193\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "54193"
+		SlnRelativePath = "..\AddressBook3Tier\"
 	EndProjectSection
 EndProject
 Global
