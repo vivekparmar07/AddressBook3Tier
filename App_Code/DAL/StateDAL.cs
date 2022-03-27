@@ -8,13 +8,12 @@ using System.Linq;
 using System.Web;
 
 /// <summary>
-/// Summary description for CityDAL
+/// Summary description for StateDAL
 /// </summary>
 namespace AddressBook.DAL
 {
-    public class CityDAL : DatabaseConfig
+    public class StateDAL : DatabaseConfig
     {
-
         #region Local Variables
 
         protected String _Message;
@@ -33,7 +32,7 @@ namespace AddressBook.DAL
         #endregion Local Variables
 
         #region Constructor
-        public CityDAL()
+        public StateDAL()
         {
             //
             // TODO: Add constructor logic here
@@ -42,7 +41,7 @@ namespace AddressBook.DAL
         #endregion Constructor
 
         #region Insert Operation
-        public Boolean Insert(CityENT entCity)
+        public Boolean Insert(StateENT entState)
         {
             using (SqlConnection objConn = new SqlConnection(ConnectionString))
             {
@@ -55,17 +54,16 @@ namespace AddressBook.DAL
                         #region Prepare Command
 
                         objCmd.CommandType = CommandType.StoredProcedure;
-                        objCmd.CommandText = "PR_City_Insert";
-                        objCmd.Parameters.AddWithValue("@CityID", SqlDbType.Int).Direction=ParameterDirection.Output;
-                        objCmd.Parameters.AddWithValue("@CityName", SqlDbType.VarChar).Value = entCity.CityName;
-                        objCmd.Parameters.AddWithValue("@PinCode", SqlDbType.VarChar).Value = entCity.Pincode;
-                        objCmd.Parameters.AddWithValue("@STDCode", SqlDbType.VarChar).Value = entCity.STDCode;
-                        objCmd.Parameters.AddWithValue("@StateID", SqlDbType.Int).Value = entCity.StateId;
-                            
+                        objCmd.CommandText = "PR_State_Insert";
+                        objCmd.Parameters.AddWithValue("@StateID", SqlDbType.Int).Direction = ParameterDirection.Output;
+                        objCmd.Parameters.AddWithValue("@StateName", SqlDbType.VarChar).Value = entState.StateName;
+                        objCmd.Parameters.AddWithValue("@StateCode", SqlDbType.VarChar).Value = entState.StateCode;
+                        objCmd.Parameters.AddWithValue("@CountryID", SqlDbType.Int).Value = entState.CountryID;
+
                         #endregion Prepare Command
 
                         objCmd.ExecuteNonQuery();
-                        entCity.CityID = (SqlInt32)objCmd.Parameters["CityID"].Value;
+                        entState.StateID = (SqlInt32)objCmd.Parameters["StateID"].Value;
                         return true;
                     }
                     catch (SqlException SqlEs)
@@ -88,10 +86,10 @@ namespace AddressBook.DAL
                 }
             }
         }
-        #endregion Insert Operation
+        #endregion Insert 
 
         #region Update Operation
-        public Boolean Update(CityENT entCity)
+        public Boolean Update(StateENT entState)
         {
             using (SqlConnection objConn = new SqlConnection(ConnectionString))
             {
@@ -104,17 +102,16 @@ namespace AddressBook.DAL
                         #region Prepare Command
 
                         objCmd.CommandType = CommandType.StoredProcedure;
-                        objCmd.CommandText = "PR_City_UpdateByPK";
-                        objCmd.Parameters.AddWithValue("@CityID", entCity.CityID);
-                        objCmd.Parameters.AddWithValue("@CityName", entCity.CityName);
-                        objCmd.Parameters.AddWithValue("@PinCode", entCity.Pincode);
-                        objCmd.Parameters.AddWithValue("@STDCode", entCity.STDCode);
-                        objCmd.Parameters.AddWithValue("@StateID", entCity.StateId);
+                        objCmd.CommandText = "PR_State_UpdateByPK";
+                        objCmd.Parameters.AddWithValue("@StateID", entState.StateID);
+                        objCmd.Parameters.AddWithValue("@CountryID", entState.CountryID);
+                        objCmd.Parameters.AddWithValue("@StateName", entState.StateName);
+                        objCmd.Parameters.AddWithValue("@StateCode", entState.StateCode);
 
                         #endregion Prepare Command
 
                         objCmd.ExecuteNonQuery();
-                        entCity.CityID = (SqlInt32)objCmd.Parameters["CityID"].Value;
+                        entState.StateID = (SqlInt32)objCmd.Parameters["StateID"].Value;
                         return true;
                     }
                     catch (SqlException SqlEs)
@@ -140,7 +137,7 @@ namespace AddressBook.DAL
         #endregion Update Operation
 
         #region Delete Operation
-        public Boolean Delete(SqlInt32 CityID)
+        public Boolean Delete(SqlInt32 StateID)
         {
             using (SqlConnection objConn = new SqlConnection(ConnectionString))
             {
@@ -153,8 +150,8 @@ namespace AddressBook.DAL
                         #region Prepare Command
                         objCmd.Connection = objConn;
                         objCmd.CommandType = CommandType.StoredProcedure;
-                        objCmd.CommandText = "PR_City_DeleteByPK";
-                        objCmd.Parameters.AddWithValue("@CityID", CityID);
+                        objCmd.CommandText = "PR_State_DeleteByPK";
+                        objCmd.Parameters.AddWithValue("@StateID", StateID);
                         #endregion Prepare Command
 
                         objCmd.ExecuteNonQuery();
@@ -189,7 +186,7 @@ namespace AddressBook.DAL
         {
             using (SqlConnection objConn = new SqlConnection(ConnectionString))
             {
-                if(objConn.State != ConnectionState.Open)
+                if (objConn.State != ConnectionState.Open)
                     objConn.Open();
                 using (SqlCommand objCmd = objConn.CreateCommand())
                 {
@@ -197,12 +194,12 @@ namespace AddressBook.DAL
                     {
                         #region Prepare Command
                         objCmd.CommandType = CommandType.StoredProcedure;
-                        objCmd.CommandText = "PR_City_selectAll";
+                        objCmd.CommandText = "PR_State_selectAll";
                         #endregion Prepare Command
 
                         #region Read Data and Set Controls 
                         DataTable dt = new DataTable();
-                        using(SqlDataReader objSDR=objCmd.ExecuteReader())
+                        using (SqlDataReader objSDR = objCmd.ExecuteReader())
                         {
                             dt.Load(objSDR);
                         }
@@ -245,7 +242,7 @@ namespace AddressBook.DAL
                     {
                         #region Prepare Command
                         objCmd.CommandType = CommandType.StoredProcedure;
-                        objCmd.CommandText = "PR_City_SelectForDropDownList";
+                        objCmd.CommandText = "PR_State_SelectForDropDownList";
                         #endregion Prepare Command
 
                         #region Read Data and Set Controls 
@@ -281,7 +278,7 @@ namespace AddressBook.DAL
         #endregion SelectForDropDownList
 
         #region SelectByPK
-        public CityENT SelectByPK(SqlInt32 CityID)
+        public StateENT SelectByPK(SqlInt32 StateID)
         {
             using (SqlConnection objConn = new SqlConnection(ConnectionString))
             {
@@ -293,36 +290,33 @@ namespace AddressBook.DAL
                     {
                         #region Prepare Command
                         objCmd.CommandType = CommandType.StoredProcedure;
-                        objCmd.CommandText = "PR_City_SelectByPK";
-                        objCmd.Parameters.AddWithValue("@CityID", CityID);
+                        objCmd.CommandText = "PR_State_SelectByPK";
+                        objCmd.Parameters.AddWithValue("@StateID", StateID);
                         #endregion Prepare Command
 
                         #region Read Data and Set Controls 
-                        CityENT entCity = new CityENT();
+                        StateENT entState = new StateENT();
                         using (SqlDataReader objSDR = objCmd.ExecuteReader())
                         {
-                            while(objSDR.Read())
+                            while (objSDR.Read())
                             {
-                                if (!objSDR["CityID"].Equals(DBNull.Value))
-                                    entCity.CityID = Convert.ToInt32(objSDR["CityID"]);
-
-                                if (!objSDR["PinCode"].Equals(DBNull.Value))
-                                    entCity.Pincode = Convert.ToString(objSDR["PinCode"]);
-
-                                if (!objSDR["CityName"].Equals(DBNull.Value))
-                                    entCity.CityName = Convert.ToString(objSDR["CityName"]);
-
-                                if (!objSDR["STDCode"].Equals(DBNull.Value))
-                                    entCity.STDCode = Convert.ToString(objSDR["STDCode"]);
-
                                 if (!objSDR["StateID"].Equals(DBNull.Value))
-                                    entCity.StateId = Convert.ToInt32(objSDR["StateID"]);
+                                    entState.StateID = Convert.ToInt32(objSDR["StateID"]);
+
+                                if (!objSDR["CountryID"].Equals(DBNull.Value))
+                                    entState.CountryID = Convert.ToInt32(objSDR["CountryID"]);
+
+                                if (!objSDR["StateName"].Equals(DBNull.Value))
+                                    entState.StateName = Convert.ToString(objSDR["StateName"]);
+
+                                if (!objSDR["StateCode"].Equals(DBNull.Value))
+                                    entState.StateCode = Convert.ToString(objSDR["StateCode"]);
 
                                 if (!objSDR["CreationDate"].Equals(DBNull.Value))
-                                    entCity.CreationDate = Convert.ToDateTime(objSDR["CreationDate"]);
+                                    entState.CreationDate = Convert.ToDateTime(objSDR["CreationDate"]);
                             }
                         }
-                        return entCity;
+                        return entState;
                         #endregion Read Data and Set Controls
                     }
                     catch (SqlException SqlEs)

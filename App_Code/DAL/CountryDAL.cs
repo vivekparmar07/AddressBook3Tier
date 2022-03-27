@@ -40,6 +40,143 @@ namespace AddressBook.DAL
         }
         #endregion Constructor
 
+        #region Insert Operation
+        public Boolean Insert(CountryENT entCountry)
+        {
+            using (SqlConnection objConn = new SqlConnection(ConnectionString))
+            {
+                if (objConn.State != ConnectionState.Open)
+                    objConn.Open();
+                using (SqlCommand objCmd = objConn.CreateCommand())
+                {
+                    try
+                    {
+                        #region Prepare Command
+
+                        objCmd.CommandType = CommandType.StoredProcedure;
+                        objCmd.CommandText = "PR_Country_Insert";
+                        objCmd.Parameters.AddWithValue("@CountryID", SqlDbType.Int).Direction = ParameterDirection.Output;
+                        objCmd.Parameters.AddWithValue("@CountryName", SqlDbType.VarChar).Value = entCountry.CountryName;
+                        objCmd.Parameters.AddWithValue("@CountryCode", SqlDbType.VarChar).Value = entCountry.CountryCode;
+
+                        #endregion Prepare Command
+
+                        objCmd.ExecuteNonQuery();
+                        entCountry.CountryID = (SqlInt32)objCmd.Parameters["CountryID"].Value;
+                        return true;
+                    }
+                    catch (SqlException SqlEs)
+                    {
+                        Message = SqlEs.InnerException.Message;
+                        return false;
+                    }
+                    catch (Exception Es)
+                    {
+                        Message = Es.InnerException.Message;
+                        return false;
+                    }
+                    finally
+                    {
+                        if (objConn.State == ConnectionState.Open)
+                        {
+                            objConn.Close();
+                        }
+                    }
+                }
+            }
+        }
+        #endregion Insert Operation
+
+        #region Update Operation
+        public Boolean Update(CountryENT entCountry)
+        {
+            using (SqlConnection objConn = new SqlConnection(ConnectionString))
+            {
+                if (objConn.State != ConnectionState.Open)
+                    objConn.Open();
+                using (SqlCommand objCmd = objConn.CreateCommand())
+                {
+                    try
+                    {
+                        #region Prepare Command
+
+                        objCmd.CommandType = CommandType.StoredProcedure;
+                        objCmd.CommandText = "PR_Country_UpdateByPK";
+                        objCmd.Parameters.AddWithValue("@Country", entCountry.CountryID);
+                        objCmd.Parameters.AddWithValue("@CountryName", entCountry.CountryName);
+                        objCmd.Parameters.AddWithValue("@CountryCode", entCountry.CountryCode);
+                        
+                        #endregion Prepare Command
+
+                        objCmd.ExecuteNonQuery();
+                        entCountry.CountryID = (SqlInt32)objCmd.Parameters["CountryID"].Value;
+                        return true;
+                    }
+                    catch (SqlException SqlEs)
+                    {
+                        Message = SqlEs.InnerException.Message;
+                        return false;
+                    }
+                    catch (Exception Es)
+                    {
+                        Message = Es.InnerException.Message;
+                        return false;
+                    }
+                    finally
+                    {
+                        if (objConn.State == ConnectionState.Open)
+                        {
+                            objConn.Close();
+                        }
+                    }
+                }
+            }
+        }
+        #endregion Update Operation
+  
+        #region Delete Operation
+        public Boolean Delete(SqlInt32 CountryID)
+        {
+            using (SqlConnection objConn = new SqlConnection(ConnectionString))
+            {
+                if (objConn.State != ConnectionState.Open)
+                    objConn.Open();
+                using (SqlCommand objCmd = objConn.CreateCommand())
+                {
+                    try
+                    {
+                        #region Prepare Command
+                        objCmd.Connection = objConn;
+                        objCmd.CommandType = CommandType.StoredProcedure;
+                        objCmd.CommandText = "PR_Country_DeleteByPK";
+                        objCmd.Parameters.AddWithValue("@CountryID", CountryID);
+                        #endregion Prepare Command
+
+                        objCmd.ExecuteNonQuery();
+                        return true;
+                    }
+                    catch (SqlException SqlEs)
+                    {
+                        Message = SqlEs.InnerException.Message;
+                        return false;
+                    }
+                    catch (Exception Es)
+                    {
+                        Message = Es.InnerException.Message;
+                        return false;
+                    }
+                    finally
+                    {
+                        if (objConn.State == ConnectionState.Open)
+                        {
+                            objConn.Close();
+                        }
+                    }
+                }
+            }
+        }
+        #endregion Delete Operation
+
         #region Select Operation
 
         #region SelectAll

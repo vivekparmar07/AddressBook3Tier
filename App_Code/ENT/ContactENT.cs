@@ -142,7 +142,7 @@ namespace AddressBook.ENT
 
         #region BirthtDate
         protected SqlDateTime _BirthtDate;
-        public SqlDateTime BirthtDate
+        public SqlDateTime BirthDate
         {
             get
             {
